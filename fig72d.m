@@ -11,16 +11,16 @@ N = length(t);       % ALWAYS a column vector
 
 % --- 2D Sensor Geometry ---
 Sensors = [
-    0,  0;
     0, 50;
     50, 0;
-    50, 50;
-    25, 25
+    25,0;
+    0, 25;
+    0,0;
 ];
 M = size(Sensors,1);
 
 % True emitter location (2D)
-Emitter_True = [35, 15];
+Emitter_True = [130, 75];
 
 % Gaussian Chirp Parameters
 sigma_F = 0.2*pi*1e6;
@@ -89,6 +89,8 @@ Cov_Est = cov(Est);
 
 disp("Finished Monte Carlo.");
 
+% disp("Finished Monte Carlo.");
+
 figure('Color','w','Position',[200 200 800 600]);
 hold on; grid on; axis equal;
 
@@ -100,11 +102,14 @@ plot(Mean_Est(1), Mean_Est(2), 'rs', 'MarkerSize',18,'LineWidth',2);
 
 scatter(Sensors(:,1), Sensors(:,2), 100, 'k', 'filled');
 
-xlabel('X (km)');
-ylabel('Y (km)');
-title(sprintf('2D DPD – Scatter & 95%% Confidence Ellipse\nASNR = %d dB, Trials = %d', ASNR_dB, Trials));
+xlabel('X (km)', 'FontSize', 18);
+ylabel('Y (km)', 'FontSize', 18);
+
+title(sprintf('2D DPD – Scatter & 95%% Confidence Ellipse\nASNR = %d dB, Trials = %d', ...
+    ASNR_dB, Trials), 'FontSize', 22, 'FontWeight','bold');
 
 legend('Estimates','Ellipse','True','Mean','Sensors');
+
 
 function J = dpd_cost_2d(pos, R, Sensors, c, freqs)
 
